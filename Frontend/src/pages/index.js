@@ -3,7 +3,7 @@ import styles from "../styles/Home.module.css";
 import Web3Modal from "web3modal";
 import { providers, Contract } from "ethers";
 import { useEffect, useRef, useState } from "react";
-import { WHITELIST_CONTRACT_ADDRESS, abi } from "../constants";
+import { WHITELIST_CONTRACT_ADDRESS, abi } from "../../Constants/Constants";
 
 export default function Home() {
   const [walletConnected, setWalletConnected] = useState(false);
@@ -23,7 +23,7 @@ export default function Home() {
     }
 
     if (needSigner) {
-      const signer = new web3Provider.getSigner();
+      const signer = web3Provider.getSigner();
       return signer;
     }
 
@@ -34,16 +34,15 @@ export default function Home() {
     try {
       const signer = await getProviderOrSigner(true);
 
-      const contract = new Contract(WHITELIST_CONTRACT_ADDRESS, abi, signer);
-
-      const txn = await contract.addAddressToWhitelist();
-
+      const whitelistContract = new Contract(
+        WHITELIST_CONTRACT_ADDRESS,
+        abi,
+        signer
+      );
+      const tx = await whitelistContract.addAddressToWhitelist();
       setLoading(true);
-
-      await txn.wait();
-
+      await tx.wait();
       setLoading(false);
-
       await getNumberOfWhitelisted();
       setJoinedWhitelist(true);
     } catch (err) {
@@ -53,12 +52,16 @@ export default function Home() {
 
   const getNumberOfWhitelisted = async () => {
     try {
-      const provider = getProviderOrSigner();
-      const contract = new Contract(WHITELIST_CONTRACT_ADDRESS, abi, provider);
+      const provider = await getProviderOrSigner();
 
-      const _numAddressesWhitelisted = await contract.numAddressesWhitelisted();
-
-      setNumberOfWhitelisted(_numAddressesWhitelisted);
+      const whitelistContract = new Contract(
+        WHITELIST_CONTRACT_ADDRESS,
+        abi,
+        provider
+      );
+      const _numberOfWhitelisted =
+        await whitelistContract.getNumOfWhitelisted();
+      setNumberOfWhitelisted(_numberOfWhitelisted);
     } catch (err) {
       console.error(err);
     }
@@ -73,10 +76,7 @@ export default function Home() {
         signer
       );
       const address = await signer.getAddress();
-
-      const _joinedWhitelist = await whitelistContract.whitelistedAddresses(
-        address
-      );
+      const _joinedWhitelist = await whitelistContract.isWhitelisted(address);
       setJoinedWhitelist(_joinedWhitelist);
     } catch (err) {
       console.error(err);
