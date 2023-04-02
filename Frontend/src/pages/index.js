@@ -60,7 +60,7 @@ export default function Home() {
         provider
       );
       const _numberOfWhitelisted =
-        await whitelistContract.numAddressesWhitelisted();
+        await whitelistContract.getNumOfWhitelisted();
       setNumberOfWhitelisted(_numberOfWhitelisted);
     } catch (err) {
       console.error(err);
@@ -76,9 +76,7 @@ export default function Home() {
         signer
       );
       const address = await signer.getAddress();
-      const _joinedWhitelist = await whitelistContract.whitelistedAddresses(
-        address
-      );
+      const _joinedWhitelist = await whitelistContract.isWhitelisted(address);
       setJoinedWhitelist(_joinedWhitelist);
     } catch (err) {
       console.error(err);

@@ -1,18 +1,16 @@
-//SPDX-License-Identifier: Unlicense
-pragma solidity ^0.8.0;
+//SPDX-License-Identifier: MIT
+pragma solidity ^0.8.9;
 
 
 contract Whitelist {
 
-    uint8 public maxWhitelistedAddresses;
+    uint256 public maxWhitelistedAddresses;
 
-  
     mapping(address => bool) public whitelistedAddresses;
 
+    uint256 public numAddressesWhitelisted;
 
-    uint8 public numAddressesWhitelisted;
-
-    constructor(uint8 _maxWhitelistedAddresses) {
+    constructor(uint256 _maxWhitelistedAddresses) {
         maxWhitelistedAddresses =  _maxWhitelistedAddresses;
     }
 
@@ -21,6 +19,14 @@ contract Whitelist {
         require(numAddressesWhitelisted < maxWhitelistedAddresses, "More addresses cant be added, limit reached");
         whitelistedAddresses[msg.sender] = true;
         numAddressesWhitelisted += 1;
+    }
+
+    function getNumOfWhitelisted() public view returns(uint256){
+        return numAddressesWhitelisted;
+    }
+
+    function isWhitelisted(address add) public view returns(bool){
+        return whitelistedAddresses[add];
     }
 
 }

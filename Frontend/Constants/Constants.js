@@ -1,13 +1,13 @@
 export const WHITELIST_CONTRACT_ADDRESS =
-  "0xd3Bf6e15a6da6392892187a83c6c19bcc35b0375";
+  "0xE3c85d67aA269f8171DFfc592795A16B82cB8083";
 
 export const abi = [
   {
     inputs: [
       {
-        internalType: "uint8",
+        internalType: "uint256",
         name: "_maxWhitelistedAddresses",
-        type: "uint8",
+        type: "uint256",
       },
     ],
     stateMutability: "nonpayable",
@@ -22,12 +22,44 @@ export const abi = [
   },
   {
     inputs: [],
+    name: "getNumOfWhitelisted",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "add",
+        type: "address",
+      },
+    ],
+    name: "isWhitelisted",
+    outputs: [
+      {
+        internalType: "bool",
+        name: "",
+        type: "bool",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
     name: "maxWhitelistedAddresses",
     outputs: [
       {
-        internalType: "uint8",
+        internalType: "uint256",
         name: "",
-        type: "uint8",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
@@ -38,9 +70,9 @@ export const abi = [
     name: "numAddressesWhitelisted",
     outputs: [
       {
-        internalType: "uint8",
+        internalType: "uint256",
         name: "",
-        type: "uint8",
+        type: "uint256",
       },
     ],
     stateMutability: "view",
